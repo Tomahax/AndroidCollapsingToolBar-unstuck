@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "709774485588",
+    "firebase_url": "https://cyber-project-e74f3.firebaseio.com",
+    "project_id": "cyber-project-e74f3",
+    "storage_bucket": "cyber-project-e74f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709774485588:android:ee4891d508be257b",
+        "android_client_info": {
+          "package_name": "edmt.dev.androidcollapsingtoolbar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709774485588-090c821i7mvhsm2bfmf6r0r27tmm3rr7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDXI8xYpw_XOlTxW6AWKFPjqb4LrTft4I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
