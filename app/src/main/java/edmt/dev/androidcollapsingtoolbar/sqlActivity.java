@@ -35,6 +35,8 @@ public class sqlActivity extends AppCompatActivity {
     private Button mSendData;
     private Button mSelectImage;
     private Button mLogOut;
+    private Button mUpdateName;
+    private Button mHome;
     private EditText valueField;
     private TextView mTextView;
 
@@ -63,6 +65,8 @@ public class sqlActivity extends AppCompatActivity {
         mSendData = (Button) findViewById(R.id.sendButton);
         mSelectImage = (Button) findViewById(R.id.selectImage);
         mLogOut = (Button) findViewById(R.id.logOut);
+        mUpdateName = (Button) findViewById(R.id.updateName);
+        mHome = (Button) findViewById(R.id.home);
         valueField = (EditText) findViewById(R.id.valueField);
         mTextView = (TextView) findViewById(R.id.textView);
 
@@ -113,7 +117,7 @@ public class sqlActivity extends AppCompatActivity {
             public void run() {
                 String value = valueField.getText().toString();
                 Firebase childRef = mRootRef.child("Name");
-                childRef.setValue(value);
+                childRef.setValue(value); // Hello Tomer !!!
                 ha.postDelayed(this, 500);
             }
         }, 500);
@@ -157,6 +161,10 @@ public class sqlActivity extends AppCompatActivity {
     //Receives realtime data from database and changes onscreen text
     private void showData(DataSnapshot dataSnapshot) {
         mTextView.setText(dataSnapshot.child("Name").getValue().toString());
+        valueField.setText(dataSnapshot.child("Name").getValue().toString());
+        valueField.setSelection(valueField.length());
+
+
     }
 
     //Images stuff
@@ -190,6 +198,21 @@ public class sqlActivity extends AppCompatActivity {
         mRootRef.push().setValue(value);
 
 
+    }
+
+    //Instant update
+    public void instantU(View view)
+    {
+        String value = valueField.getText().toString();
+        Firebase childRef = mRootRef.child("Name");
+        childRef.setValue(value);
+    }
+
+    //onClick for going to home page
+    public void onClickHome(View view)
+    {
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
     }
 }
 
