@@ -1,10 +1,12 @@
 package edmt.dev.androidcollapsingtoolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -214,5 +216,35 @@ public class sqlActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
+
+    //onClick for adding an idea to firebase
+    public void onClickAddIdeaToFirebase(View view)
+    {
+        String value = valueField.getText().toString();
+        Firebase childRef = mRootRef.child("Ideas");
+        childRef.push().setValue(value);
+    }
+
+
+    //App exit dialog (Alert    )
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder builder= new android.app.AlertDialog.Builder(this);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setTitle("Closing Activity");
+                builder.setMessage("Are you sure you want to close this activity?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+
 }
 

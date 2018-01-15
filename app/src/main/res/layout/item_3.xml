@@ -13,11 +13,21 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:id="@+id/text_testing_area"/>
-    
+
+    <Button
+        android:id="@+id/add_item_to_recycler_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_testing_area"
+        android:background="@drawable/button_background_blue"
+        android:layout_centerHorizontal="true"
+        android:text="add item to recycler"
+        android:textColor="#FFFFFF" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerview_id_1"
-        android:layout_below="@id/text_testing_area"/>
+        android:layout_below="@id/add_item_to_recycler_button"/>
 
 </RelativeLayout>
