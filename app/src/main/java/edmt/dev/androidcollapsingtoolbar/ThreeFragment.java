@@ -93,7 +93,7 @@ public class ThreeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.item_3, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_1);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_3);
 
          final List<Idea> sampleidea = new ArrayList<>();
 
@@ -113,12 +113,12 @@ public class ThreeFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new RecyclerAdapter(sampleidea));
+        recyclerView.setAdapter(new RecyclerAdapter(getContext() ,sampleidea));
 
-        //Saving to Shared Preferences
-        saveIdeas(sampleidea);
-        //Reading from Shared Preferences
-        readIdeas();
+//        //Saving to Shared Preferences
+//        saveIdeas(sampleidea);
+//        //Reading from Shared Preferences
+//        readIdeas();
 
         //Test
         Button button = (Button) view.findViewById(R.id.add_item_to_recycler_button);
@@ -134,7 +134,7 @@ public class ThreeFragment extends Fragment {
                 a.ideadesc = "testing the desc";
                 a.ideaimage = R.drawable.macos;
                 sampleidea.add(a);
-                recyclerView.setAdapter(new RecyclerAdapter(sampleidea));
+                recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
             }
         });
 
@@ -168,8 +168,4 @@ public class ThreeFragment extends Fragment {
         Toast.makeText(getActivity(),arrayList.get(1).ideatitle,Toast.LENGTH_SHORT).show();
     }
 
-    public void onClickAddItem()
-    {
-
-    }
 }

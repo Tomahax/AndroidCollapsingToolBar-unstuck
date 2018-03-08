@@ -9,5 +9,6 @@ public class Idea {
     public String ideatitle;
     public String ideadesc;
     public int ideaimage;
+    public String ideacontent;
 
 }

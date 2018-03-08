@@ -1,5 +1,10 @@
 package edmt.dev.androidcollapsingtoolbar;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,6 +48,9 @@ public class TwoFragment extends Fragment {
                 mAuth.signOut();
             }
         });
+
+        //Loads circular image view
+
 
         return view;
     }

@@ -27,7 +27,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerview_id_1"
+        android:id="@+id/recyclerview_id_3"
         android:layout_below="@id/add_item_to_recycler_button"/>
 
 </RelativeLayout>

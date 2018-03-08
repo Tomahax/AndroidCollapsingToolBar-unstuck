@@ -1,175 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout_fragment_1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F5F5F5"
-    android:id="@+id/scroll_view_item_1">
+    android:layout_height="match_parent">
 
 
+    <Button
+        android:id="@+id/add_idea_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_background_blue"
+        android:orientation="vertical"
+        android:text="Add Idea"
+        android:textColor="#ffffff" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/relative_layout_items_1">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/add_idea_button"
-                android:text="Add Idea"
-                android:layout_margin="10dp"
-                android:textColor="#ffffff"
-                android:background="@drawable/button_background_blue"/>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview_id3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignStart="@+id/cardview_id2"
-                android:layout_below="@+id/cardview_id2"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="4dp"
-                app:contentPadding="16dp"
-                android:clickable="true"
-                android:layout_margin="5dp"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="120dp"
-                        android:layout_height="90dp"
-                        android:padding="4dp"
-                        android:src="@drawable/macos"/>
-
-                    <TextView
-                        android:id="@+id/textViewTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/imageView"
-                        android:text="Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                        android:textColor="#000000" />
-
-                    <TextView
-                        android:id="@+id/textViewShortDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/textViewTitle"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@id/imageView"
-                        android:text="13.3 Inch, 256 GB"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/textViewRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/textViewShortDesc"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@id/imageView"
-                        android:background="@color/colorPrimary"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="4.7"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textViewPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/textViewRating"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@id/imageView"
-                        android:text="INR 56990"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerview_id_1"
+        android:layout_below="@id/add_idea_button"/>
 
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview_id2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignStart="@+id/cardview_id1"
-                android:layout_below="@+id/cardview_id1"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="4dp"
-                app:contentPadding="16dp"
-                android:layout_margin="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Ideas"
-                    android:textSize="70dp" />
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview_id1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/cardview_id"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="4dp"
-                app:contentPadding="16dp"
-                android:layout_margin="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Ideas"
-                    android:textSize="70dp" />
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="4dp"
-                app:contentPadding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Ideas"
-                    android:textSize="70dp" />
-
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-
-
-</ScrollView>
+</RelativeLayout>
