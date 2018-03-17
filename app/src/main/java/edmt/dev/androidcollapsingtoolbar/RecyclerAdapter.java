@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,6 +25,8 @@ import static android.content.ContentValues.TAG;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+    private Firebase mRootRef;
 
     private List<Idea> ideas;
     private Context context;
@@ -43,6 +46,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        mRootRef = new Firebase("https://cyber-project-e74f3.firebaseio.com/");
 
         final Idea sampleidea = ideas.get(position);
         holder.title.setText(sampleidea.ideatitle);
@@ -88,6 +93,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             }
         }
+
+        //Delete from Firebase
+        Firebase mRefChild = mRootRef.child("Ideas");
+        Firebase mDeleteThisRef = mRefChild.child("IdIs:"+idea.ideatitle.toString());
+        mDeleteThisRef.removeValue();
     }
 
     //Save idea list

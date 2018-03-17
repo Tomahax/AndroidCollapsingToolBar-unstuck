@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import static edmt.dev.androidcollapsingtoolbar.R.id.time;
 
@@ -104,6 +108,16 @@ public class OneFragment extends Fragment {
 
 
 
+//        User test_user= new User();
+//        test_user.color = "#FFFFFF";
+//        test_user.auth = 0;
+//        test_user.identifier = "asdjJ5jJAsd5";
+//
+//        saveUserInfo(test_user);
+//        Toast.makeText(getActivity(),readUserInfo().toString(),Toast.LENGTH_SHORT).show();
+
+
+
 //        LinearLayout relative1 =(LinearLayout)view.findViewById(R.id.relative_layout_items_1);
 //
 //        ViewGroup.LayoutParams lprams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -137,18 +151,19 @@ public class OneFragment extends Fragment {
 
         final List<Idea> sampleidea = new ArrayList<>();
 
-        for (int i=0; i<readIdeas().size(); i++){
+        if(readIdeas()!=null) {
+            for (int i = 0; i < readIdeas().size(); i++) {
 
-            Idea idea = new Idea();
+                Idea idea = new Idea();
 
-            idea.ideatitle = readIdeas().get(i).ideatitle;
-            idea.ideadesc = readIdeas().get(i).ideadesc;
-            idea.ideaimage = readIdeas().get(i).ideaimage;
+                idea.ideatitle = readIdeas().get(i).ideatitle;
+                idea.ideadesc = readIdeas().get(i).ideadesc;
+                idea.ideaimage = readIdeas().get(i).ideaimage;
 
-            sampleidea.add(idea);
+                sampleidea.add(idea);
 
+            }
         }
-
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -173,16 +188,18 @@ public class OneFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                RelativeLayout relative1 =(RelativeLayout) view.findViewById(R.id.relative_layout_fragment_3);
-                ViewGroup.LayoutParams lprams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                Idea a = new Idea();
-                a.ideatitle = "test";
-                a.ideadesc = "testing the desc";
-                a.ideaimage = R.drawable.macos;
-                sampleidea.add(a);
-                saveIdeas(sampleidea);
-                //recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
-                recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
+
+                //Uncross for fragment 3
+//                RelativeLayout relative1 =(RelativeLayout) view.findViewById(R.id.relative_layout_fragment_3);
+//                ViewGroup.LayoutParams lprams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+////                Idea a = new Idea();
+////                a.ideatitle = "test";
+////                a.ideadesc = "testing the desc";
+////                a.ideaimage = R.drawable.macos;
+////                sampleidea.add(a);
+////                saveIdeas(sampleidea);
+//                //recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
+//                recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
 
                 final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
                 LayoutInflater mInflater = LayoutInflater.from(getActivity());
@@ -202,9 +219,14 @@ public class OneFragment extends Fragment {
                     public void onClick(View v) {
                         //Create Custom Idea
                         Idea a = new Idea();
+                        User CurrentUser = readUserInfo();
                         a.ideatitle = dialogTitle.getText().toString();
                         a.ideadesc = dialogDescription.getText().toString();
                         a.ideaimage = R.drawable.macos;
+                        if(a.users == null)
+                            {a.users = new ArrayList<User>();}
+
+                        a.users.add(new User(CurrentUser.identifier,CurrentUser.user_color, CurrentUser.auth, CurrentUser.user_name));
                         sampleidea.add(a);
                         saveIdeas(sampleidea);
                         //recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
@@ -214,11 +236,16 @@ public class OneFragment extends Fragment {
                         //Adding new idea to Firebase
                         long counter =  System.currentTimeMillis() % 1000;
                         Firebase mRefChild = mRootRef.child("Ideas");
-                        Firebase currentIdea = mRefChild.child("IdIs:"+counter);
+                        Firebase currentIdea = mRefChild.child("IdIs:"+dialogTitle.getText());
                         Firebase RefTitle = currentIdea.child("Title");
                         Firebase RefDesc = currentIdea.child("Desc");
+                        Firebase RefContent = currentIdea.child("Content");
+                        RefContent.setValue("");
                         RefTitle.setValue(a.ideatitle = dialogTitle.getText().toString());
                         RefDesc.setValue(a.ideadesc = dialogDescription.getText().toString());
+                        a.ideakey = currentIdea.getKey();
+
+
 
                     }
                 });
@@ -246,6 +273,19 @@ public class OneFragment extends Fragment {
 
     }
 
+    //Save user info locally
+    public void saveUserInfo(User user)
+    {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+
+        String json = gson.toJson((User)user);
+
+        editor.putString("User", json);
+        editor.commit();
+    }
+
     //Read idea list from shared preferences
     public ArrayList<Idea> readIdeas()
     {
@@ -255,6 +295,17 @@ public class OneFragment extends Fragment {
         Type type = new TypeToken<ArrayList<Idea>>() {}.getType();
         ArrayList<Idea> arrayList = gson.fromJson(json, type);
         return arrayList;
+    }
+
+    //Read user info`
+    public User readUserInfo()
+    {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("User", null);
+        Type type = new TypeToken<User>() {}.getType();
+        User user = gson.fromJson(json, type);
+        return user;
     }
 
 

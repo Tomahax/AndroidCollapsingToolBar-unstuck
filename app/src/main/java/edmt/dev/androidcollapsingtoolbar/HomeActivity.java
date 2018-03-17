@@ -1,17 +1,31 @@
 package edmt.dev.androidcollapsingtoolbar;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ToolbarWidgetWrapper;
+import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import android.provider.Settings.Secure;
 
 public class HomeActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
+
+
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +44,10 @@ public class HomeActivity extends AppCompatActivity {
         adapter.addFragment(new TwoFragment(), "Profile");
         adapter.addFragment(new ThreeFragment(), "Settings");
 
+        mAuth = FirebaseAuth.getInstance();
+
+
+
         //implement the adapter
         viewPager.setAdapter(adapter);
 
@@ -41,5 +59,12 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_tag_faces_black_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_black_24dp);
 
+
+
+
+
     }
+
+
+
 }

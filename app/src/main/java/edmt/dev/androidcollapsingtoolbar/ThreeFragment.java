@@ -93,27 +93,27 @@ public class ThreeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.item_3, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_3);
-
-         final List<Idea> sampleidea = new ArrayList<>();
-
-        for (int i=0; i<title.length; i++){
-
-            Idea idea = new Idea();
-
-            idea.ideatitle = title[i];
-            idea.ideadesc = desc[i];
-            idea.ideaimage = image[i];
-
-            sampleidea.add(idea);
-
-        }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new RecyclerAdapter(getContext() ,sampleidea));
+//        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_3);
+//
+//         final List<Idea> sampleidea = new ArrayList<>();
+//
+//        for (int i=0; i<title.length; i++){
+//
+//            Idea idea = new Idea();
+//
+//            idea.ideatitle = title[i];
+//            idea.ideadesc = desc[i];
+//            idea.ideaimage = image[i];
+//
+//            sampleidea.add(idea);
+//
+//        }
+//
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setAdapter(new RecyclerAdapter(getContext() ,sampleidea));
 
 //        //Saving to Shared Preferences
 //        saveIdeas(sampleidea);
@@ -121,22 +121,22 @@ public class ThreeFragment extends Fragment {
 //        readIdeas();
 
         //Test
-        Button button = (Button) view.findViewById(R.id.add_item_to_recycler_button);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                RelativeLayout relative1 =(RelativeLayout) view.findViewById(R.id.relative_layout_fragment_3);
-                ViewGroup.LayoutParams lprams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                Idea a = new Idea();
-                a.ideatitle = "test";
-                a.ideadesc = "testing the desc";
-                a.ideaimage = R.drawable.macos;
-                sampleidea.add(a);
-                recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
-            }
-        });
+//        Button button = (Button) view.findViewById(R.id.add_item_to_recycler_button);
+//        button.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                RelativeLayout relative1 =(RelativeLayout) view.findViewById(R.id.relative_layout_fragment_3);
+//                ViewGroup.LayoutParams lprams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                Idea a = new Idea();
+//                a.ideatitle = "test";
+//                a.ideadesc = "testing the desc";
+//                a.ideaimage = R.drawable.macos;
+//                sampleidea.add(a);
+//                recyclerView.setAdapter(new RecyclerAdapter(getContext(), sampleidea));
+//            }
+//        });
 
 
         return view;

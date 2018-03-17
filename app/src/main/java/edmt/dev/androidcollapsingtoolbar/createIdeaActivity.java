@@ -10,7 +10,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -60,6 +62,8 @@ public class createIdeaActivity extends AppCompatActivity {
 
 
 
+
+
         //Find the Idea
         List<Idea> Ideas= readIdeas();
         for (int i = 0; i<Ideas.size(); i++)
@@ -72,8 +76,11 @@ public class createIdeaActivity extends AppCompatActivity {
             }
         }
 
+        //Possibly Delete later
+        Toast.makeText(this,thisIdea.users.get(0).toString(), Toast.LENGTH_SHORT).show();
 
-        //        InApp text field updater
+
+        //InApp text field updater
         mRootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,10 +116,10 @@ public class createIdeaActivity extends AppCompatActivity {
                 thisIdea.ideacontent = value;
 
                 //Save Iea content to Firebase
-                Firebase currentIdea = childRef.child(thisIdea.ideatitle.toString());
-                Firebase RefDesc = currentIdea.child("Desc");
+                Firebase currentIdea = childRef.child("IdIs:"+thisIdea.ideatitle.toString());
+                Firebase RefContent = currentIdea.child("Content");
 
-                RefDesc.setValue(value);
+                RefContent.setValue(value);
 
 
                 ha.postDelayed(this, 500);
@@ -124,7 +131,7 @@ public class createIdeaActivity extends AppCompatActivity {
 
     //Receives realtime data from database and changes onscreen text
     private void showData(DataSnapshot dataSnapshot) {
-        mEditText.setText(dataSnapshot.child("Name").getValue().toString());
+        mEditText.setText(dataSnapshot.child("Ideas").child("IdIs:"+thisIdea.ideatitle.toString()).child("Content").getValue().toString());
         mEditText.setSelection(mEditText.length());
     }
 
