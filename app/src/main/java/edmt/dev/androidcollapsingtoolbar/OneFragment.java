@@ -18,7 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,55 +52,13 @@ public class OneFragment extends Fragment {
 
     private Firebase mRootRef;
 
+    private FirebaseAuth mAuth;
+
+
 
     View view;
     RecyclerView recyclerView;
 
-    String [] title = {
-
-            "Title1",
-            "Title2",
-            "Title3",
-            "Title4",
-            "Title5",
-            "Title6",
-            "Title7",
-            "Title8",
-            "Title9",
-            "Title10",
-            "Title11",
-
-    };
-
-    String [] desc = {
-            "Description1",
-            "Description2",
-            "Description3",
-            "Description4",
-            "Description5",
-            "Description6",
-            "Description7",
-            "Description8",
-            "Description9",
-            "Description10",
-            "Description11",
-
-    };
-
-    int [] image = {
-
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-    };
 
     public OneFragment() {
     }
@@ -105,6 +69,8 @@ public class OneFragment extends Fragment {
         view = inflater.inflate(R.layout.item_1, container, false);
 
         mRootRef = new Firebase("https://cyber-project-e74f3.firebaseio.com/");
+
+        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -145,20 +111,50 @@ public class OneFragment extends Fragment {
 //            }
 //        });
 
+        //Syncing with Tomer (if current user is not Tomer)
+        if(readUserInfo().auth!=1)
+        {
+            Firebase mRefName = mRootRef.child("Name");
+
+            mRefName.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                   Gson gson = new Gson();
+                   String json = dataSnapshot.getValue().toString();
+
+                    Type type = new TypeToken<ArrayList<Idea>>(){}.getType();
+                    ArrayList tomerIdeas = gson.fromJson(json, type);
+
+                    saveIdeas(tomerIdeas);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+
+            });
+
+            Toast.makeText(getActivity(),"Synced",Toast.LENGTH_SHORT).show();
+
+        }
+
+
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_1);
 
         final List<Idea> sampleidea = new ArrayList<>();
 
-        if(readIdeas()!=null) {
-            for (int i = 0; i < readIdeas().size(); i++) {
+        ArrayList<Idea> readIdeas = readIdeas();
+        if(readIdeas!=null) {
+            for (int i = 0; i < readIdeas.size(); i++) {
 
                 Idea idea = new Idea();
 
-                idea.ideatitle = readIdeas().get(i).ideatitle;
-                idea.ideadesc = readIdeas().get(i).ideadesc;
-                idea.ideaimage = readIdeas().get(i).ideaimage;
+                idea.ideatitle = readIdeas.get(i).ideatitle;
+                idea.ideadesc = readIdeas.get(i).ideadesc;
+                idea.ideaimage = readIdeas.get(i).ideaimage;
 
                 sampleidea.add(idea);
 
@@ -168,12 +164,7 @@ public class OneFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
         recyclerView.setHasFixedSize(true);
-        //uncomment the following line if turns out not to work
-        //recyclerView.setAdapter(new RecyclerAdapter(getContext() ,sampleidea));
-
-
         recyclerView.setAdapter(new RecyclerAdapter(getContext() ,sampleidea));
 
 //        //Saving to Shared Preferences
@@ -234,7 +225,6 @@ public class OneFragment extends Fragment {
                         dialog.dismiss();
 
                         //Adding new idea to Firebase
-                        long counter =  System.currentTimeMillis() % 1000;
                         Firebase mRefChild = mRootRef.child("Ideas");
                         Firebase currentIdea = mRefChild.child("IdIs:"+dialogTitle.getText());
                         Firebase RefTitle = currentIdea.child("Title");
@@ -244,6 +234,16 @@ public class OneFragment extends Fragment {
                         RefTitle.setValue(a.ideatitle = dialogTitle.getText().toString());
                         RefDesc.setValue(a.ideadesc = dialogDescription.getText().toString());
                         a.ideakey = currentIdea.getKey();
+
+                        //Setting idea in particular user's storage unit
+                        Firebase mRefUserIdeas = mRootRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("user_ideas").child("IdIs:"+dialogTitle.getText());
+                        RefTitle = mRefUserIdeas.child("Title");
+                        RefDesc = mRefUserIdeas.child("Desc");
+                        RefContent = mRefUserIdeas.child("Content");
+                        RefContent.setValue("");
+                        RefTitle.setValue(a.ideatitle = dialogTitle.getText().toString());
+                        RefDesc.setValue(a.ideadesc = dialogDescription.getText().toString());
+
 
 
 
@@ -271,6 +271,13 @@ public class OneFragment extends Fragment {
         editor.putString(TAG, json);
         editor.commit();
 
+
+        //Save to firebase for sync with users (if this is Tomer)
+        if(readUserInfo().auth==1) {
+            Firebase mRefName = mRootRef.child("Name");
+            mRefName.setValue(json);
+        }
+
     }
 
     //Save user info locally
@@ -297,7 +304,7 @@ public class OneFragment extends Fragment {
         return arrayList;
     }
 
-    //Read user info`
+    //Read user info
     public User readUserInfo()
     {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -322,6 +329,8 @@ public class OneFragment extends Fragment {
         }
         return null;
     }
+
+
 
 
 }

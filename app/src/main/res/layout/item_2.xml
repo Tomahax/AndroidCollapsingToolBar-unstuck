@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightGrey">
@@ -16,14 +16,27 @@
             android:scaleType="centerCrop"
             android:src="@drawable/google_header" />
 
-        <ImageButton
+        <!--<ImageButton-->
+            <!--android:id="@+id/user_profile_photo"-->
+            <!--android:layout_width="120dp"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:layout_below="@+id/header_cover_image"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="-60dp"-->
+            <!--android:background="#FFFFFF"-->
+            <!--android:elevation="5dp"-->
+            <!--android:padding="20dp"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@drawable/img_profile_circular_demo" />-->
+
+
+        <ImageView
             android:id="@+id/user_profile_photo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_below="@+id/header_cover_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-60dp"
-            android:background="#FFFFFF"
             android:elevation="5dp"
             android:padding="20dp"
             android:scaleType="centerCrop"
@@ -144,14 +157,14 @@
         </LinearLayout>
 
 
-        <TextView
+        <Button
             android:id="@+id/log_out_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="59dp"
             android:background="@drawable/button_background_blue"
             android:clickable="true"
             android:text="Log Out"
@@ -168,5 +181,5 @@
     </RelativeLayout>
 
 
-</RelativeLayout>
+</ScrollView>
 

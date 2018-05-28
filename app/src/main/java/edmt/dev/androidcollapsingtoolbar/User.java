@@ -1,5 +1,7 @@
 package edmt.dev.androidcollapsingtoolbar;
 
+import android.media.Image;
+
 /**
  * Created by tomer on 15/03/2018.
  */
@@ -12,6 +14,7 @@ public class User {
     public int auth;
     public String user_name;
     public String user_status;
+    public Image user_image;
 
     public User(String identifier, String color, int auth, String name) {
         this.user_name = name;

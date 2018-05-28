@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edmt.dev.androidcollapsingtoolbar.createIdeaActivity"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    tools:context="edmt.dev.androidcollapsingtoolbar.createIdeaActivity"
+    >
 
-<!--<ScrollView-->
+    <!--<ScrollView-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_width="match_parent"/>-->
     <android.support.v7.widget.Toolbar
@@ -20,14 +20,32 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Settings"
+        app:title="Idea"
         app:titleTextColor="#FFFFFF" />
 
-    <EditText
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/manual_save_button"
         android:layout_width="match_parent"
-        android:id="@+id/title_edit_text"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background_blue"
+        android:onClick="manualSave"
+        android:text="Manual Save" />
 
+    <EditText
+        android:id="@+id/title_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:textStyle="bold"
+
+        />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:background="@drawable/button_background_blue"
         />
 
 </LinearLayout>

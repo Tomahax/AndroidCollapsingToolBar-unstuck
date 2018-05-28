@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,51 +42,9 @@ public class ThreeFragment extends Fragment {
     View view;
     RecyclerView recyclerView;
 
-    String [] title = {
+    EditText editText;
 
-        "Title1",
-        "Title2",
-        "Title3",
-        "Title4",
-        "Title5",
-        "Title6",
-        "Title7",
-        "Title8",
-        "Title9",
-        "Title10",
-        "Title11",
-
-    };
-
-    String [] desc = {
-        "Description1",
-        "Description2",
-        "Description3",
-        "Description4",
-        "Description5",
-        "Description6",
-        "Description7",
-        "Description8",
-        "Description9",
-        "Description10",
-        "Description11",
-
-    };
-
-    int [] image = {
-
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-            R.drawable.macos,
-    };
+    Button mOkChangeColor;
 
     public ThreeFragment() {
     }
@@ -92,6 +53,19 @@ public class ThreeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.item_3, container, false);
+
+        editText =(EditText) view.findViewById(R.id.ColorChangeField);
+
+        mOkChangeColor = (Button) view.findViewById(R.id.okChangeColor);
+
+        mOkChangeColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = readUserInfo();
+                user.user_color = editText.getText().toString();
+                saveUserInfo(user);
+            }
+        });
 
 //        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_id_3);
 //
@@ -139,8 +113,14 @@ public class ThreeFragment extends Fragment {
 //        });
 
 
+
+
         return view;
     }
+
+
+
+
 
     //Save idea list
     public void saveIdeas(List<Idea> ideas)
@@ -166,6 +146,37 @@ public class ThreeFragment extends Fragment {
         Type type = new TypeToken<ArrayList<Idea>>() {}.getType();
         ArrayList<Idea> arrayList = gson.fromJson(json, type);
         Toast.makeText(getActivity(),arrayList.get(1).ideatitle,Toast.LENGTH_SHORT).show();
+    }
+
+
+    //Save user info locally
+    public void saveUserInfo(User user) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+
+        String json = gson.toJson((User) user);
+
+        editor.putString("User", json);
+        editor.commit();
+
+        //Save user color to firebase
+        Firebase mRootRef = new Firebase("https://cyber-project-e74f3.firebaseio.com/");
+        Firebase mRefUsers = mRootRef.child("Users");
+        Firebase mRefUser = mRefUsers.child(user.identifier);
+        Firebase mRefUserColor = mRefUser.child("user_color");
+        mRefUserColor.setValue(user.user_color);
+    }
+
+    //Read user info
+    public User readUserInfo() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        String json = sharedPrefs.getString("User", null);
+        Type type = new TypeToken<User>() {
+        }.getType();
+        User user = gson.fromJson(json, type);
+        return user;
     }
 
 }

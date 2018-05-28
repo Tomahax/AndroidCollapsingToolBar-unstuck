@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "edmt.dev.androidcollapsingtoolbar"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -54,6 +54,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation 'com.android.support:cardview-v7:27.0.2'
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
+    compile 'com.squareup.picasso:picasso:2.3.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

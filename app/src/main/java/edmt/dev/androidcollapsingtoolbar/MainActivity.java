@@ -2,6 +2,7 @@ package edmt.dev.androidcollapsingtoolbar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -37,10 +38,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.provider.Settings.Secure;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String android_id;
+
+    private String[] colorCodes;
 
     //Creating a user array
     private static final List<User> users = new ArrayList<User>();
@@ -78,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
         mGoogleButton = (SignInButton) findViewById(R.id.googleBtn);
         mAuth = FirebaseAuth.getInstance();
         mRootRef = new Firebase("https://cyber-project-e74f3.firebaseio.com/");
+
+        //Setting up the colors
+        colorCodes = new String[]{"#000000", "#FFFFFF", "#FA0101", "#FA0101", "#F80586", "#16FB01"};
+        //(black white red blue pink green)
+        final int randomColor = new Random().nextInt(colorCodes.length);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -118,20 +128,31 @@ public class MainActivity extends AppCompatActivity {
                 if (firebaseAuth.getCurrentUser() != null) {
                     startActivity(new Intent(MainActivity.this, HomeActivity.class));
 
-                    //Adding the user to firebase
-                    Firebase mRefUsers = mRootRef.child("Users");
-                    Firebase mRefUser = mRefUsers.child(firebaseAuth.getCurrentUser().getUid().toString());
-                    Firebase mRefUserName = mRefUser.child("user_name");
-                    Firebase mRefUserColor = mRefUser.child("user_color");
-                    mRefUserName.setValue(firebaseAuth.getCurrentUser().getDisplayName().toString());
-                    mRefUserColor.setValue("#000000");
-
 //        Initialize user information
                     android_id = firebaseAuth.getCurrentUser().getUid().toString();
-                    User MyUser = new User(android_id, "#000000", 0, firebaseAuth.getCurrentUser().getDisplayName().toString());
+                    User MyUser;
+
+                    //get user from storage if exists, else , create a new one with a random color
+                    if (readUserInfo() != null) {
+                        MyUser = readUserInfo();
+                    } else {
+                        MyUser = new User(android_id, colorCodes[randomColor], 0, firebaseAuth.getCurrentUser().getDisplayName().toString());
+                        //Adding the user to firebase
+                        Firebase mRefUsers = mRootRef.child("Users");
+                        Firebase mRefUser = mRefUsers.child(firebaseAuth.getCurrentUser().getUid().toString());
+                        Firebase mRefUserName = mRefUser.child("user_name");
+                        Firebase mRefUserColor = mRefUser.child("user_color");
+                        mRefUserName.setValue(firebaseAuth.getCurrentUser().getDisplayName().toString());
+                        mRefUserColor.setValue(colorCodes[randomColor]);
+                        Toast.makeText(MainActivity.this, readUserInfo().identifier, Toast.LENGTH_SHORT).show();
+                    }
+                    if (MyUser.user_name.toString().equals("תומר חרובי")) {
+                        //Gives Tomer authority
+                        MyUser.auth = 1;
+                    }
                     saveUserInfo(MyUser);
                     //Toast for testing user id
-                    Toast.makeText(MainActivity.this,readUserInfo().identifier,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, readUserInfo().identifier, Toast.LENGTH_SHORT).show();
 
 
                 }
